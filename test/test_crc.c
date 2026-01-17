@@ -47,17 +47,32 @@ int test_crc(crc_test_vector_t vector)
 int main(void)
 {
     size_t num_tests = sizeof(test_vectors) / sizeof(test_vectors[0]);
-    size_t passed = 0;
+
+    size_t update_crc_passed = 0;
     for (size_t i = 0; i < num_tests; i++) {
-        if (!test_crc(test_vectors[i]) && !test_update_crc(test_vectors[i])) {
-            passed++;
-            printf("[PASS] Test %zu/%zu\n", i + 1, num_tests);
+        if (!test_update_crc(test_vectors[i])) {
+            update_crc_passed++;
+            printf("[PASS] Test %zu/%zu of update_crc()\n", i + 1, num_tests);
         } else {
-            printf("[FAIL] Test %zu/%zu\n", i + 1, num_tests);
+            printf("[FAIL] Test %zu/%zu of update_crc()\n", i + 1, num_tests);
         }
     }
 
-    printf("Passed %zu out of %zu tests\n", passed, num_tests);
+    printf("\nPassed %zu out of %zu tests of update_crc()\n", update_crc_passed, num_tests);
+
+    printf("\n");
+    
+    size_t crc_passed = 0;
+    for (size_t i = 0; i < num_tests; i++) {
+        if (!test_crc(test_vectors[i])) {
+            crc_passed++;
+            printf("[PASS] Test %zu/%zu of crc()\n", i + 1, num_tests);
+        } else {
+            printf("[FAIL] Test %zu/%zu of crc()\n", i + 1, num_tests);
+        }
+    }
+
+    printf("\nPassed %zu out of %zu tests of crc()\n", crc_passed, num_tests);
 
     return 0;
 }
