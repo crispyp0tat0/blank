@@ -56,3 +56,7 @@ dkms.conf
 
 # vscode settings
 .vscode/
+
+# stderr and stdout files
+err.txt
+out.txt
