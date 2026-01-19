@@ -8,6 +8,7 @@ INCLUDE_DIR = include
 BUILD_DIR = build
 TEST_DIR = test
 TEST_BUILD_DIR = $(BUILD_DIR)/test
+MAIN_DIR = main
 
 # Project output
 TARGET = $(BUILD_DIR)/blank
@@ -15,6 +16,9 @@ TARGET = $(BUILD_DIR)/blank
 # Source files
 SRC_FILES := $(wildcard $(SRC_DIR)/*.c)
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
+
+MAIN_SRC := $(MAIN_DIR)/main.c
+MAIN_OBJ := $(BUILD_DIR)/main.o
 
 # Test files
 TEST_FILES := $(wildcard $(TEST_DIR)/*.c)
@@ -24,11 +28,15 @@ TEST_TARGETS := $(patsubst $(TEST_DIR)/%.c,$(TEST_BUILD_DIR)/%,$(TEST_FILES))
 all: $(TARGET)
 
 # Build main project executable
-$(TARGET): $(OBJ_FILES) | $(BUILD_DIR)
+$(TARGET): $(MAIN_OBJ) $(OBJ_FILES) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) $^ -o $@
 
-# Compile main project object files
+# core sources
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+# main source
+$(BUILD_DIR)/main.o: $(MAIN_SRC) | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 # Build test executables
